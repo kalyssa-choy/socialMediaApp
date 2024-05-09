@@ -15,7 +15,6 @@
 		3390491D2BDAA48200A53C80 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3390491C2BDAA48200A53C80 /* LoginView.swift */; };
 		3390491F2BDAA4A300A53C80 /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3390491E2BDAA4A300A53C80 /* ArchiveView.swift */; };
 		33B7B89B2BE2969B0000149F /* NewPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B7B89A2BE2969B0000149F /* NewPostView.swift */; };
-		33B7B89D2BE299410000149F /* OwnAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B7B89C2BE299410000149F /* OwnAccountView.swift */; };
 		33DD0B922BDFEF340022D12F /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33DD0B912BDFEF340022D12F /* AccountSettingsView.swift */; };
 /* End PBXBuildFile section */
 
@@ -29,8 +28,6 @@
 		3390491C2BDAA48200A53C80 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		3390491E2BDAA4A300A53C80 /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
 		33B7B89A2BE2969B0000149F /* NewPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostView.swift; sourceTree = "<group>"; };
-		33B7B89C2BE299410000149F /* OwnAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnAccountView.swift; sourceTree = "<group>"; };
-		33CE944B2BDC0BF4007CF948 /* profileIcon.webp */ = {isa = PBXFileReference; lastKnownFileType = file; path = profileIcon.webp; sourceTree = "<group>"; };
 		33DD0B912BDFEF340022D12F /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -69,10 +66,8 @@
 				33B7B89A2BE2969B0000149F /* NewPostView.swift */,
 				33DD0B912BDFEF340022D12F /* AccountSettingsView.swift */,
 				3390491A2BDAA44E00A53C80 /* AccountView.swift */,
-				33B7B89C2BE299410000149F /* OwnAccountView.swift */,
 				3390491C2BDAA48200A53C80 /* LoginView.swift */,
 				3390491E2BDAA4A300A53C80 /* ArchiveView.swift */,
-				33CE944B2BDC0BF4007CF948 /* profileIcon.webp */,
 				339049102BDAA40300A53C80 /* Assets.xcassets */,
 				339049122BDAA40300A53C80 /* Preview Content */,
 			);
@@ -160,7 +155,6 @@
 				33DD0B922BDFEF340022D12F /* AccountSettingsView.swift in Sources */,
 				3390491B2BDAA44E00A53C80 /* AccountView.swift in Sources */,
 				3390490F2BDAA40200A53C80 /* ContentView.swift in Sources */,
-				33B7B89D2BE299410000149F /* OwnAccountView.swift in Sources */,
 				33B7B89B2BE2969B0000149F /* NewPostView.swift in Sources */,
 				3390491F2BDAA4A300A53C80 /* ArchiveView.swift in Sources */,
 				3390491D2BDAA48200A53C80 /* LoginView.swift in Sources */,

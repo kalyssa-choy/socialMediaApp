@@ -19,11 +19,11 @@ struct AccountSettingsView: View {
                     .font(.system(size: 33))
                     .frame(maxWidth: 360, alignment: .topLeading)
                 
-//                Button(action:{
-//                    //switch between 3 profile icons (idk how to do it)
-//                }, label:{
-//                    Image("profileIcon")
-//                })
+                Button(action:{
+                    //switch between 3 profile icons (idk how to do it)
+                }, label:{
+                    Image("profileIcon")
+                })
                 
 //                Button(action:{
 //                    
@@ -36,5 +36,5 @@ struct AccountSettingsView: View {
 }
 
 #Preview {
-    AccountSettingsView(theUser: .constant(User(username: "tempUser", bio: "tempBio", followers: 0, following: 0, password: "password", notifications: true, isPublic: true)))
+    AccountSettingsView(theUser: .constant(User(username: "tempUser", bio: "tempBio", followers: 0, followingCount: 0, following: false, password: "password", archive: [])))
 }

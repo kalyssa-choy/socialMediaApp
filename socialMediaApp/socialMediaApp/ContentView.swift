@@ -15,15 +15,14 @@ struct Post{
     var liked: Bool
 }
 
-struct User: Hashable{
+struct User{
     var username: String
     var bio: String
     var followers: Int
     var followingCount: Int
     var following: Bool
     var password: String
-    var notifications: Bool
-    var isPublic: Bool
+    var archive: [Post]
 }
 
 struct Comment{
@@ -35,121 +34,192 @@ struct ContentView: View {
     
     @State private var comment:String = ""
     
-    @State private var allPosts: [Post] = [Post(username: "tim", postText: "yapyapp", likeNum: 0, comments: [], liked: false)]
+    @State private var allPosts: [Post] = [Post(username: "tim", postText: "yapyappyapyapp", likeNum: 0, comments: [Comment(username: "yuki", body: "hello")], liked: false), Post(username: "kchoy", postText: "HALLOOOOOSOSOSOSOSOOSOSOSOSOS I LIKE TO EAT AND SHOOP AND I AM GOING TO BE ATTENDED UCSD IN THE FALL!", likeNum: 10000, comments: [], liked: false), Post(username: "kchoy", postText: "D I AM GOING TO BE ATTENDED UCSD IN THE FALL!", likeNum: 100, comments: [], liked: false)]
+    @State private var myUser: User = User(username: "kchoy", bio: "branham", followers: 0, followingCount: 0, following: false, password: "password", archive: [])
     
-    @State private var allUsers: [User] = []
-    
-    @State private var myUser: User = User(username: "kchoy", bio: "branham", followers: 0, followingCount: 0, following: false, password: "password", notifications: false, isPublic: true)
+    @State private var allUsers: [User] = [User(username: "tim", bio: "I like dogs", followers: 1, followingCount: 3, following: true, password: "pass", archive: []), User(username: "kchoy", bio: "branham", followers: 0, followingCount: 0, following: false, password: "password", archive: [])]
     
     var body: some View {
         NavigationView{
-            ScrollView{
-                VStack {
-                    ForEach(allPosts.indices, id: \.self) { i in
-                        VStack{
-                            
-                            ForEach(allUsers.indices, id: \.self){ i in
-                                if allUsers[i].username == allPosts[i].username{
-                                    //the post's account
-                                    NavigationLink(destination: AccountView(allPosts: $allPosts, theUser: allUsers[i], thePost: allPosts[i], allUsers: $allUsers, myUser: $myUser)){
-                                        Text("@\(allPosts[i].username)")
-                                            .padding()
-                                            .foregroundColor(.black)
-                                    }
-                                }
-                            }
-                            
-                            //the text body of the post
-                            Text("\(allPosts[i].postText)")
-                            
-                            //the like and like count bar
-                            HStack{
-                                //the like button
-                                Button(action: {
-                                    if allPosts[i].liked{
-                                        allPosts[i].likeNum -= 1
-                                        allPosts[i].liked.toggle()
-                                    }
-                                    else{
-                                        allPosts[i].likeNum += 1
-                                        allPosts[i].liked.toggle()
-                                    }
-                                }, label: {
-                                    Image(systemName: "heart.fill")
-                                        .foregroundColor(allPosts[i].liked ? .red : .black)
-                                })
-                                
-                                //displays num of likes
-                                Text("\(allPosts[i].likeNum) Likes")
-                            }
-                                    
-                            //the existing comment list
-                            VStack{
-                                ForEach(allPosts[i].comments.indices, id: \.self) { j in
-                                    HStack{
-                                        Text("@\(allPosts[i].comments[j].username): ")
-                                        
-                                        Text("\(allPosts[i].comments[j].body)")
-                                    }
-                                }
-                            }
-                            
-                            //adding comment bar
-                            HStack{
-                                TextField("Comment", text: $comment)
-                                
-                                //add comment button
-                                Button(action:{
-                                    if comment != ""{
-                                        //creates a new note
-                                        let newComment: Comment = Comment(username: myUser.username, body: comment)
-                                        //appends that new note
-                                        allPosts[i].comments.append(newComment)
-                                        comment = ""
-                                    }
-                                }, label:{
-                                    Image(systemName: "bubble.left")
-                                })
-                            }
-                        }
-                    }
-                    
-                    //the menu bar on the bottom
+            TabView{
+                ScrollView(.vertical){
+                    //home title
                     HStack{
-                        //home buton (goes to home page)
-                        NavigationLink(destination: ContentView().navigationBarBackButtonHidden(true)){
-                            Image(systemName: "house.fill")
-                                .font(.system(size: 25))
-                                .foregroundColor(.black)
-                        }
+                        Image(systemName: "house.fill")
+                            .font(.system(size: 33))
+                            .padding(.horizontal, 10)
+                            .padding(.top, 15)
                         
-                        //create new post button (goes to new post page)
-                        NavigationLink(destination: NewPostView()){
-                            Text("+")
-                                .frame(width: 40, height: 30)
-                                .background(Color.white) 
+                        Text("Home")
+                            //styling
+                            .fontWeight(.bold)
+                            .font(.system(size: 33))
+                            .frame(maxWidth: 360)
+                            .padding(.horizontal, -140)
+                            .padding(.top, 19)
+                        
+                        Spacer()
+                    }
+                   
+                    VStack {
+                        ForEach(allPosts.indices, id: \.self) { i in
+                            VStack{
+                                HStack{
+                                    ForEach(allUsers.indices, id: \.self){ index in
+                                        if allUsers[index].username == allPosts[i].username{
+                                            //the post's account
+                                            if allUsers[index].username == myUser.username{
+                                                //this line isn't working
+                                                NavigationLink(destination: AccountView(allPosts: $allPosts, theUser: $myUser, myUser: $myUser)){
+                                                    Text("@\(myUser.username)")
+                                                        .padding()
+                                                        .foregroundColor(.black)
+                                                }
+                                                
+                                                Spacer()
+//                                                archive button on the own post
+                                                Button(action: {
+                                                    allUsers[index].archive.append(allPosts[i])
+                                                    myUser.archive.append(allPosts[i])
+                                                    allPosts.remove(at: i)
+                                                    }, label:{
+                                                        Image(systemName: "hourglass")
+                                                            .font(.system(size: 20))
+                                                            .foregroundColor(.black)
+                                                            .padding()
+                                                    })
+                                                
+                                            }
+                                            else{
+                                                NavigationLink(destination: AccountView(allPosts: $allPosts, theUser: allUsers[index], myUser: $myUser)){
+                                                    Text("@\(allPosts[i].username)")
+                                                        .padding()
+                                                        .foregroundColor(.black)
+                                                }
+                                                Spacer()
+                                            }
+                                        }
+                                    }
+                                   
+                                }
+                                .frame(width: 360)
                                 .border(Color.black)
-                                .cornerRadius(10)
+                                
+                                
+                                //the text body of the post
+                                HStack{
+                                    Text("\(allPosts[i].postText)")
+                                        .padding()
+                                    
+                                    Spacer()
+                                }
+                                .frame(width: 360)
+                                .border(Color.black)
+                                .padding(-9)
+                                
+                        
+                                //the like and like count bar
+                                HStack{
+                                    //the like button
+                                    Button(action: {
+                                        if allPosts[i].liked{
+                                            allPosts[i].likeNum -= 1
+                                            allPosts[i].liked.toggle()
+                                        }
+                                        else{
+                                            allPosts[i].likeNum += 1
+                                            allPosts[i].liked.toggle()
+                                        }
+                                    }, label: {
+                                        Image(systemName: "heart.fill")
+                                            .foregroundColor(allPosts[i].liked ? .red : .black)
+                                            .padding()
+                                    })
+                                    
+                                    //displays num of likes
+                                    Text("\(allPosts[i].likeNum) Likes")
+                          
+                                    Spacer()
+                                }
+                                .frame(width: 360, height: 50)
+                                .border(Color.black)
+                                
+                                
+                                //the existing comment list
+                                VStack{
+                                    if allPosts[i].comments.count > 0{
+                                        VStack{
+                                            ForEach(allPosts[i].comments.indices, id: \.self) { j in
+                                                HStack{
+                                                    Text("@\(allPosts[i].comments[j].username): ")
+                                                        .padding()
+                                                    
+                                                    Text("\(allPosts[i].comments[j].body)")
+                                                    
+                                                    Spacer()
+                                                }
+                                            }
+                                        }
+                                        .frame(width: 360)
+                                        .border(Color.black)
+                                        .padding(-9)
+                                    }
+                                }
+                                
+                                //add user comment bar
+                                HStack{
+                                    TextField("Comment", text: $comment)
+                                        .padding()
+                                    //add comment button
+                                    Button(action:{
+                                        if comment != ""{
+                                            //creates a new note
+                                            let newComment: Comment = Comment(username: myUser.username, body: comment)
+                                            //appends that new note
+                                            allPosts[i].comments.append(newComment)
+                                            comment = ""
+                                        }
+                                    }, label:{
+                                        Image(systemName: "bubble.left")
+                                    })
+                                    .padding()
+                                }
+                                .frame(width: 360)
+                                .border(Color.black)
+                    
+                            }
                             
                         }
                         
-                        //archive menu button (goes to user archive page)
-                        NavigationLink(destination: ArchiveView()){
-                            Image(systemName: "hourglass")
-                                .font(.system(size: 28))
-                                .foregroundColor(.black)
-                        }
-                        
-                        //arccount menu button (goes to user account)
-                        NavigationLink(destination: OwnAccountView(allPosts: $allPosts, myUser: $myUser)){
-                            
-                        }
                     }
                 }
-                .padding()
+
+                .tabItem {
+                    Image(systemName: "house.fill")
+                    Text("Home")
+                }
+                .foregroundColor(.black)
+                
+                NewPostView()
+                .tabItem{
+                    Image(systemName: "note.text")
+                    Text("New Post")
+                }
+                
+                ArchiveView()
+                .tabItem{
+                    Image(systemName: "hourglass")
+                    Text("Archive")
+                }
+                
+                
+                AccountView(allPosts: $allPosts, theUser: $myUser, myUser: $myUser)
+                .tabItem{
+                    Image(systemName: "person.circle.fill")
+                    Text("Account")
+                }
             }
-            //might remove
-            .navigationBarTitle("Home")
+            
         }
     }
 }
