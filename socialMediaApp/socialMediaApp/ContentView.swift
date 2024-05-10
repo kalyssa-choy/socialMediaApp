@@ -35,7 +35,7 @@ struct ContentView: View {
     @State private var comment:String = ""
     
     @State private var allPosts: [Post] = [Post(username: "tim", postText: "yapyappyapyapp", likeNum: 0, comments: [Comment(username: "yuki", body: "hello")], liked: false), Post(username: "kchoy", postText: "HALLOOOOOSOSOSOSOSOOSOSOSOSOS I LIKE TO EAT AND SHOOP AND I AM GOING TO BE ATTENDED UCSD IN THE FALL!", likeNum: 10000, comments: [], liked: false), Post(username: "kchoy", postText: "D I AM GOING TO BE ATTENDED UCSD IN THE FALL!", likeNum: 100, comments: [], liked: false)]
-    @State private var myUser: User = User(username: "kchoy", bio: "branham", followers: 0, followingCount: 0, following: false, password: "password", archive: [])
+    @State private var myUser: User = User(username: "temp", bio: "branham", followers: 0, followingCount: 0, following: false, password: "password", archive: [])
     
     @State private var allUsers: [User] = [User(username: "tim", bio: "I like dogs", followers: 1, followingCount: 3, following: true, password: "pass", archive: []), User(username: "kchoy", bio: "branham", followers: 0, followingCount: 0, following: false, password: "password", archive: [])]
     
@@ -64,20 +64,20 @@ struct ContentView: View {
                     VStack {
                         ForEach(allPosts.indices, id: \.self) { i in
                             VStack{
+                                //error for some reason
                                 HStack{
                                     ForEach(allUsers.indices, id: \.self){ index in
                                         if allUsers[index].username == allPosts[i].username{
                                             //the post's account
-                                            if allUsers[index].username == myUser.username{
-                                                //this line isn't working
-                                                NavigationLink(destination: AccountView(allPosts: $allPosts, theUser: $myUser, myUser: $myUser)){
-                                                    Text("@\(myUser.username)")
-                                                        .padding()
-                                                        .foregroundColor(.black)
-                                                }
+                                            NavigationLink(destination: AccountView(allPosts: $allPosts, theUser: $allUsers[index], myUser: $myUser, allUsers: $allUsers)){
+                                                Text("@\(allUsers[index].username)")
+                                                    .padding()
+                                                    .foregroundColor(.black)
+                                            }
                                                 
-                                                Spacer()
-//                                                archive button on the own post
+                                            Spacer()
+                                                //archive button on the own post
+                                            if allUsers[index].username == myUser.username{
                                                 Button(action: {
                                                     allUsers[index].archive.append(allPosts[i])
                                                     myUser.archive.append(allPosts[i])
@@ -87,16 +87,7 @@ struct ContentView: View {
                                                             .font(.system(size: 20))
                                                             .foregroundColor(.black)
                                                             .padding()
-                                                    })
-                                                
-                                            }
-                                            else{
-                                                NavigationLink(destination: AccountView(allPosts: $allPosts, theUser: allUsers[index], myUser: $myUser)){
-                                                    Text("@\(allPosts[i].username)")
-                                                        .padding()
-                                                        .foregroundColor(.black)
-                                                }
-                                                Spacer()
+                                                })
                                             }
                                         }
                                     }
@@ -169,6 +160,7 @@ struct ContentView: View {
                                 //add user comment bar
                                 HStack{
                                     TextField("Comment", text: $comment)
+                                        .autocapitalization(.none)
                                         .padding()
                                     //add comment button
                                     Button(action:{
@@ -212,8 +204,8 @@ struct ContentView: View {
                     Text("Archive")
                 }
                 
-                
-                AccountView(allPosts: $allPosts, theUser: $myUser, myUser: $myUser)
+                //can you put an if else statement in front of tab item?
+                AccountView(allPosts: $allPosts, theUser: $myUser, myUser: $myUser, allUsers: $allUsers)
                 .tabItem{
                     Image(systemName: "person.circle.fill")
                     Text("Account")
